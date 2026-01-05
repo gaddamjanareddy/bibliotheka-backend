@@ -18,8 +18,10 @@ app.use("/uploads", express.static("uploads"));
 
 // Middleware
 app.use(cors({
-  origin: "http://localhost:5173", 
-  credentials: true,               
+  origin: [
+    "http://localhost:5173",
+    "https://bibliotheka.netlify.app"
+  ],               
   allowedHeaders: ["Content-Type", "Authorization"], 
 }));
 app.use(express.json());
