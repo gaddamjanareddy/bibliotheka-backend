@@ -33,7 +33,7 @@ app.use("/api/google-books", googleBooksRoutes);
 
 // MongoDB Connection
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("DB Connection Error:", err));
 
