@@ -21,7 +21,7 @@ const books = JSON.parse(
 
 const seedBooks = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URL);
+    await mongoose.connect(process.env.MONGO_URI);
 
     await Book.deleteMany();       // optional
     await Book.insertMany(books);  // BEST choice
