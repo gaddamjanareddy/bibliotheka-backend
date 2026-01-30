@@ -72,6 +72,17 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Invalid email or password" });
     }
 
+    // 🔁 Upgrade old bcrypt hashes to lower cost (performance improvement)
+const currentRounds = bcrypt.getRounds(user.password);
+
+if (currentRounds > 8) {
+  console.log(`🔁 Rehashing password from cost ${currentRounds} to 8`);
+  const newHash = await bcrypt.hash(password, 8);
+  user.password = newHash;
+  await user.save();
+}
+
+
     console.time("JWT_SIGN");
     const token = jwt.sign(
       { id: user._id, role: user.role },
