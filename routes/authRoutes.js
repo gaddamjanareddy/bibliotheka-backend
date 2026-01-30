@@ -48,6 +48,7 @@ router.post("/signup", async (req, res) => {
 //   }
 // });
 router.post("/login", async (req, res) => {
+   console.log("🔥 LOGIN API HIT");
   console.time("LOGIN_TOTAL");
 
   try {
