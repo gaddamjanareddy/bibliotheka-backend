@@ -25,6 +25,8 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+
+
 // Login route
 // router.post("/login", async (req, res) => {
 //   try {
@@ -48,9 +50,6 @@ router.post("/signup", async (req, res) => {
 //   }
 // });
 router.post("/login", async (req, res) => {
-   console.log("🔥 LOGIN API HIT");
-  console.time("LOGIN_TOTAL");
-
   try {
     const { email, password } = req.body;
 
@@ -59,16 +58,12 @@ router.post("/login", async (req, res) => {
     console.timeEnd("DB_FIND_USER");
 
     if (!user) {
-      console.timeEnd("LOGIN_TOTAL");
       return res.status(400).json({ error: "Invalid email or password" });
     }
 
-    console.time("BCRYPT_COMPARE");
     const isMatch = await bcrypt.compare(password, user.password);
-    console.timeEnd("BCRYPT_COMPARE");
 
     if (!isMatch) {
-      console.timeEnd("LOGIN_TOTAL");
       return res.status(400).json({ error: "Invalid email or password" });
     }
 
@@ -76,7 +71,6 @@ router.post("/login", async (req, res) => {
 const currentRounds = bcrypt.getRounds(user.password);
 
 if (currentRounds > 8) {
-  console.log(`🔁 Rehashing password from cost ${currentRounds} to 8`);
   const newHash = await bcrypt.hash(password, 8);
   user.password = newHash;
   await user.save();
@@ -89,13 +83,9 @@ if (currentRounds > 8) {
       process.env.JWT_SECRET,
       { expiresIn: "2h" }
     );
-    console.timeEnd("JWT_SIGN");
-
-    console.timeEnd("LOGIN_TOTAL");
 
     res.json({ message: "Login successful", token, role: user.role });
   } catch (err) {
-    console.timeEnd("LOGIN_TOTAL");
     res.status(500).json({ error: err.message });
   }
 });

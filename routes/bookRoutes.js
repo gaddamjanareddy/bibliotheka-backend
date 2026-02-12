@@ -283,9 +283,6 @@ router.post(
   authorizeRoles("admin", "student", "super_admin"),
   async (req, res) => {
     try {
-      console.log("Incoming Book Data:", req.body); // DEBUG: See what frontend is sending
-      console.log("User from Token:", req.user);    // DEBUG: Ensure user ID exists
-
       const { coverUrl, title, author, year, genre, description, tags, googleId } = req.body;
 
       // 1. Validation check
@@ -538,8 +535,6 @@ router.post("/filter", authenticateToken, async (req, res) => {
   { $match: {} },
   { $group: { _id: "$addedBy", count: { $sum: 1 } } }
 ]);
-
-console.log(test);
 
 
     /*  SORT  */
